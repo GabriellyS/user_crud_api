@@ -3,8 +3,10 @@ package com.example.user_crud_api.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "usuarios")
