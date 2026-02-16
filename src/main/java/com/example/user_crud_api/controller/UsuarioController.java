@@ -29,7 +29,7 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<Page> listUser (@RequestParam (required = false) String nome, @PageableDefault(size = 10, sort = "name") Pageable pageable){
-        return ResponseEntity.status(200).body(service.listarUsuarios(nome,pageable)
+        return ResponseEntity.status(200).body(service.listUsers(nome,pageable)
                 .map(usuarioModel -> new ResponseUserDTO(usuarioModel.getName(),usuarioModel.getEmail())));
     }
 
@@ -41,7 +41,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editUser (@PathVariable Long id, @RequestBody CreateUserDTO userDTO){
-        service.updateUsuario(id, userDTO.nome(), userDTO.email(), userDTO.senha());
+        service.updateUser(id, userDTO.nome(), userDTO.email(), userDTO.senha());
         return ResponseEntity.status(200).body("Usuário atualizado");
     }
 }

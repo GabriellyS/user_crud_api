@@ -9,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @Slf4j
 public class UsuarioService {
@@ -33,7 +31,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Page<UsuarioModel> listarUsuarios (String nome, Pageable pageable){
+    public Page<UsuarioModel> listUsers (String nome, Pageable pageable){
         if (nome != null && !nome.isBlank()){
             return repository.findByNameContainingIgnoreCase(nome,pageable);
         }else {
@@ -47,7 +45,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void updateUsuario(Long id,String nome,String email, String senha){
+    public void updateUser(Long id, String nome, String email, String senha){
         UsuarioModel usuarioEncontrado = repository.findById(id)
                 .orElseThrow(UsuarioNotFoundException::new);
         if (nome != null && !nome.isBlank()){
