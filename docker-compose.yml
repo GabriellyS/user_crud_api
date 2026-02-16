@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql
+    volumes:
+      - user-crud-api-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+    environment:
+      MYSQL_ROOT_PASSWORD: m4st3r_p4ssw0rd
+      MYSQL_DATABASE: user_crud
+      MYSQL_USER: crud_app
+      MYSQL_PASSWORD: crud_r00t
+
+volumes:
+  user-crud-api-data:
