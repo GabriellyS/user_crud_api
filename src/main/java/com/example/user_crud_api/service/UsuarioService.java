@@ -45,7 +45,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void updateUsuario(Long id,String nome,String email, String senha){
+    public boolean updateUsuario(Long id,String nome,String email, String senha){
         Optional<UsuarioModel> isFound = repository.findById(id);
         if (isFound.isPresent()){
             UsuarioModel usuarioEncontrado = isFound.get();
@@ -58,9 +58,11 @@ public class UsuarioService {
             if ((senha != null && !senha.isBlank())){
                 usuarioEncontrado.setSenha(senha);
             }
-            emailService.sendEmail(email, "atualizado");
+            emailService.sendEmail(usuarioEncontrado.getEmail(), "atualizado");
+            return true;
         }else {
             log.info("Usuário não encontrado no sistema");
+            return false;
         }
     }
 }
