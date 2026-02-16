@@ -15,18 +15,19 @@ public class UsuarioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column (nullable = false)
     private String name;
-    @Column
-    private String senha;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    public UsuarioModel(String name, String senha, String email) {
+    @Column(nullable = false)
+    private String senha;
+
+    public UsuarioModel(String name, String email, String senha) {
         this.name = name;
-        this.senha = senha;
         this.email = email;
+        this.senha = senha;
     }
 
     public void setName(String name) {
