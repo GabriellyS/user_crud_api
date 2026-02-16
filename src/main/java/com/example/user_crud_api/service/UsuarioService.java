@@ -1,5 +1,6 @@
 package com.example.user_crud_api.service;
 
+import com.example.user_crud_api.exception.UsuarioNotFoundException;
 import com.example.user_crud_api.model.UsuarioModel;
 import com.example.user_crud_api.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -40,29 +41,24 @@ public class UsuarioService {
         }
     }
 
-    public Optional<UsuarioModel> findById (long id){
-        return repository.findById(id);
+    public UsuarioModel findById (long id){
+        return repository.findById(id)
+                .orElseThrow(UsuarioNotFoundException::new);
     }
 
     @Transactional
-    public boolean updateUsuario(Long id,String nome,String email, String senha){
-        Optional<UsuarioModel> isFound = repository.findById(id);
-        if (isFound.isPresent()){
-            UsuarioModel usuarioEncontrado = isFound.get();
-            if (nome != null && !nome.isBlank()){
-                usuarioEncontrado.setName(nome);
-            }
-            if (email != null && !email.isBlank()){
-                usuarioEncontrado.setEmail(email);
-            }
-            if ((senha != null && !senha.isBlank())){
-                usuarioEncontrado.setSenha(senha);
-            }
-            emailService.sendEmail(usuarioEncontrado.getEmail(), "atualizado");
-            return true;
-        }else {
-            log.info("Usuário não encontrado no sistema");
-            return false;
+    public void updateUsuario(Long id,String nome,String email, String senha){
+        UsuarioModel usuarioEncontrado = repository.findById(id)
+                .orElseThrow(UsuarioNotFoundException::new);
+        if (nome != null && !nome.isBlank()){
+            usuarioEncontrado.setName(nome);
         }
+        if (email != null && !email.isBlank()){
+            usuarioEncontrado.setEmail(email);
+        }
+        if ((senha != null && !senha.isBlank())){
+            usuarioEncontrado.setSenha(senha);
+        }
+        emailService.sendEmail(usuarioEncontrado.getEmail(), "atualizado");
     }
 }

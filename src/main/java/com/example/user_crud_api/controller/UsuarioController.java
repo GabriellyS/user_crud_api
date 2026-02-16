@@ -10,7 +10,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -35,23 +34,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById (@PathVariable Long id){
-        Optional<UsuarioModel> isfound = service.findById(id);
-        if(isfound.isPresent()) {
-            UsuarioModel foundUser = isfound.get();
-            return ResponseEntity.status(200).body(service.findById(id)
-                    .map(usuarioModel -> new ResponseUserDTO(usuarioModel.getName(), usuarioModel.getEmail())));
-        }
-        return ResponseEntity.status(404).body("User not found");
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        UsuarioModel usuario = service.findById(id);
+        return ResponseEntity.status(200).body(new ResponseUserDTO(usuario.getName(), usuario.getEmail()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editUser (@PathVariable Long id, @RequestBody CreateUserDTO userDTO){
-        boolean isFound = service.updateUsuario(id, userDTO.nome(), userDTO.email(), userDTO.senha());
-        if (isFound){
-            return ResponseEntity.status(200).body("Usuário atualizado");
-        }else {
-            return ResponseEntity.status(404).body("Usuário não encontrado");
-        }
+        service.updateUsuario(id, userDTO.nome(), userDTO.email(), userDTO.senha());
+        return ResponseEntity.status(200).body("Usuário atualizado");
     }
 }
